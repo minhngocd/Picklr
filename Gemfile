@@ -38,3 +38,6 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+
+gem 'net-ssh', '~> 2.9.1'
+gem 'highline', '~> 1.6.21'

@@ -20,7 +20,12 @@ namespace :build do
   task :package => [:clean, :bundle] do
     current_directory = `pwd`
     puts "Packaging directory #{current_directory}"
-    `tar -zcf #{PACKAGE_DIRECTORY}/package-$(date +"%m-%d-%Y").tar.gz --exclude=".git/" --exclude=".idea/" .`
+    `tar -zcf #{PACKAGE_DIRECTORY}/package-$(date +"%m-%d-%Y").tar.gz \
+      --exclude=".git/" \
+      --exclude=".idea/" \
+      --exclude="deployment/" \
+      --exclude=".rvmrc" \
+    .`
     puts "*"*50
   end
 
