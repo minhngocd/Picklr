@@ -15,9 +15,12 @@
 /log/*.log
 /tmp
 
-.git/
-.idea/
+.git
+.idea
+.git/*
+.idea/*
 *.iml
 *.iws
 *.ipr
-/bin
+bin/
+bin/*
