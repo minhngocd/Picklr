@@ -14,7 +14,7 @@ end
 
 def stop_service ssh
   begin
-    ssh.exec! "cd /tmp/picklr && kill -9 $(cat picklr.pid)"
+    ssh.exec! "cd /tmp/picklr && kill -9 $(cat tmp/pids/server.pid)"
   rescue
     puts "-"*20
     puts "unable to find pid file... Make sure process is run using script!"
@@ -85,16 +85,16 @@ begin
     end
 
     puts "*"*100
-    puts "starting service..."
-    puts ssh.exec!("echo $PATH")
-    ssh.exec!("cd /tmp/picklr && sudo bundle install") do |channel, stream, line|
+    puts "Starting service..."
+    ssh.exec! "cd /tmp/picklr && source ~/.rvm/scripts/rvm && sudo bundle install && rails server -d " do |channel, stream, line|
       puts line
     end
+
 
     result = :stopped
     5.times do
       response = ssh.exec! "curl #{HEALTHCHECK_URL}"
-      if response.include? "Completed 200 OK"
+      if response.include? "Welcome aboard"
         result = :running
         break
       end
