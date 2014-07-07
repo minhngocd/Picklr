@@ -25,8 +25,8 @@ def stop_service ssh
   puts "Waiting for Service to stop..."
   result = :running
   5.times do
-    response = ssh.exec! "curl #{HEALTHCHECK_URL}"
-    if response.include? "couldn't connect to host"
+    response = ssh.exec! "curl -I #{HEALTHCHECK_URL}"
+    if response.include? "Connection refused"
       result = :stopped
       break
     end
@@ -80,19 +80,19 @@ begin
 
     puts "*"*100
     puts "unzipping archive..."
-    ssh.exec "cd /tmp/picklr && tar -zxf #{filename}.tar.gz" do |channel, stream, line|
+    ssh.exec! "cd /tmp/picklr && tar -zxf #{filename}.tar.gz" do |channel, stream, line|
       puts line
     end
 
     puts "*"*100
     puts "Starting service..."
-    ssh.exec "cd /tmp/picklr && export $PATH && sudo bundle install && rails server -d " do |channel, stream, line|
+    ssh.exec! "cd /tmp/picklr && sudo gem install bundler && bundle install && rails server -d " do |channel, stream, line|
       puts line
     end
 
     result = :stopped
     5.times do
-      response = ssh.exec! "curl #{HEALTHCHECK_URL}"
+      response = ssh.exec! "curl -I #{HEALTHCHECK_URL}"
       if response.include? "200 OK"
         result = :running
         break
