@@ -24,3 +24,5 @@
 *.ipr
 bin/
 bin/*
+deployment/.vagrant
+deployment/.vagrant/*

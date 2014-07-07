@@ -1,9 +1,10 @@
 require 'net/ssh'
 require "highline/import"
 
-USERNAME = "vagrant"
-SERVER = "default"
-PORT = 2222
+PACKAGE_PATH = ARGV[0]
+USERNAME = ARGV[1]
+SERVER = ARGV[2]
+PORT = ARGV[3] || 2222
 
 HEALTHCHECK_URL = "localhost:3000"
 
@@ -45,15 +46,14 @@ def parse_filename filepath
   match.captures.first unless match.nil?
 end
 
-if ARGV.length != 1
-  exit_script "Usage: ruby deploy.rb <package path>"
+if ARGV.length < 3 || ARGV.length > 4
+  exit_script "Usage: ruby deploy.rb <package path> <username> <server> [optional] <port>"
 end
 
 
 begin
 
-  filepath = ARGV.first
-  filename = parse_filename filepath
+  filename = parse_filename PACKAGE_PATH
 
   password = ask("SSH password for #{USERNAME}@#{SERVER}: ") { |input| input.echo = false }
 
@@ -75,26 +75,25 @@ begin
     clean_artifacts ssh
 
     puts "*"*100
-    puts "copying file to qa environment..."
-    `scp -P #{PORT} #{filepath} #{USERNAME}@#{SERVER}:/tmp/picklr/ > /dev/tty`
+    puts "copying file to environment..."
+    `scp -P #{PORT} #{PACKAGE_PATH} #{USERNAME}@#{SERVER}:/tmp/picklr/ > /dev/tty`
 
     puts "*"*100
     puts "unzipping archive..."
-    ssh.exec!("cd /tmp/picklr && tar -zxf #{filename}.tar.gz") do |channel, stream, line|
+    ssh.exec "cd /tmp/picklr && tar -zxf #{filename}.tar.gz" do |channel, stream, line|
       puts line
     end
 
     puts "*"*100
     puts "Starting service..."
-    ssh.exec! "cd /tmp/picklr && source ~/.rvm/scripts/rvm && sudo bundle install && rails server -d " do |channel, stream, line|
+    ssh.exec "cd /tmp/picklr && export $PATH && sudo bundle install && rails server -d " do |channel, stream, line|
       puts line
     end
-
 
     result = :stopped
     5.times do
       response = ssh.exec! "curl #{HEALTHCHECK_URL}"
-      if response.include? "Welcome aboard"
+      if response.include? "200 OK"
         result = :running
         break
       end
