@@ -26,3 +26,5 @@ bin/
 bin/*
 deployment/.vagrant
 deployment/.vagrant/*
+.rspec
+
