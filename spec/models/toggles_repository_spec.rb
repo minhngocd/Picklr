@@ -14,4 +14,18 @@ describe TogglesRepository do
   end
 
 
+  RSpec::Matchers.define :contain_toggle do |expected_toggle|
+    match do |actual_list|
+      actual_list.each do |listed_toggle|
+        puts "expected toggle ",expected_toggle.inspect, " listed toggle ", listed_toggle.inspect
+        if (listed_toggle.name == expected_toggle.name \
+        && listed_toggle.display_name == expected_toggle.display_name \
+        && listed_toggle.description == expected_toggle.description) then
+          return true
+        end
+      end
+      return false
+    end
+  end
+
 end
