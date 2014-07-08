@@ -28,7 +28,9 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 group :development, :test do
   gem 'spring'
-  gem 'rspec-rails', '~>2.8.0'
+  gem 'rspec-rails', '~>2.13.1'
+  gem 'minitest'
+  gem 'cucumber'
 end
 
 gem 'pg'

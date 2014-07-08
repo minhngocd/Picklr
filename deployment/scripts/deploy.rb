@@ -86,7 +86,7 @@ begin
 
     puts "*"*100
     puts "Starting service..."
-    ssh.exec! "cd /tmp/picklr && sudo gem install bundler && bundle install && rails server -d " do |channel, stream, line|
+    ssh.exec! "cd /tmp/picklr && sudo gem install bundler && bundle install && rake db:create db:migrate &&rails server -d " do |channel, stream, line|
       puts line
     end
 
