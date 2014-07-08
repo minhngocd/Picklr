@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 describe TogglesRepository do
 
@@ -10,7 +10,8 @@ describe TogglesRepository do
 
   it "should find all toggles" do
     all_toggles = TogglesRepository.all_toggles
-    all_toggles.length.should == 3
+    all_toggles.length.should eq 3
+    (all_toggles.first.is_a? Toggle).should be true
   end
 
 
