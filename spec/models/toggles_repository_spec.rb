@@ -10,9 +10,11 @@ describe TogglesRepository do
 
   it "should find all toggles" do
     all_toggles = TogglesRepository.all_toggles
-    all_toggles.length.should eq 3
-    (all_toggles.first.is_a? Toggle).should be true
+    all_toggles.length.should == 3
+    (all_toggles.first.is_a? Toggle).should == true
     all_toggles.should contain_toggle Toggle.new("test1", "Test 1", "description")
+    all_toggles.should contain_toggle Toggle.new("test2", "Test 2", "description")
+    all_toggles.should contain_toggle Toggle.new("test3", "Test 3", "description")
   end
 
   RSpec::Matchers.define :contain_toggle do |expected_toggle|

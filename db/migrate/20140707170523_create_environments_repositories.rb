@@ -5,5 +5,7 @@ class CreateEnvironmentsRepositories < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :environments_repositories, :name, unique: true
   end
 end

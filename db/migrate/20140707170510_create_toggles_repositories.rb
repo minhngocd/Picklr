@@ -7,5 +7,7 @@ class CreateTogglesRepositories < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :toggles_repositories, :name, unique: true
   end
 end

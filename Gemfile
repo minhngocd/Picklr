@@ -28,9 +28,9 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 group :development, :test do
   gem 'spring'
-  gem 'rspec-rails', '~>2.13.1'
-  gem 'minitest'
-  gem 'cucumber'
+  gem 'rspec-rails', '~>2.14.1'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
 end
 
 gem 'pg'

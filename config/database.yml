@@ -8,10 +8,13 @@ development:
   <<: *default
   database: picklr_development
 
-test:
+test: &test
   <<: *default
   database: picklr_test
 
 production:
   <<: *default
   database: picklr_production
+
+cucumber:
+  <<: *test
