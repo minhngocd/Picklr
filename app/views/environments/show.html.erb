@@ -2,7 +2,7 @@
     <% @toggles.each do |toggle| %>
         <li id="<%= toggle.name %>">
             <div><%= toggle.display_name %></div>
-            <div class="switch <%= toggle.value ? "on" : "off" %>"></div>
+            <div class="switch <%= toggle.value ? "on" : "off" %>"><%= toggle.value %></div>
         </li>
     <% end %>
 </ul>
