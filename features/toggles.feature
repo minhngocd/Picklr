@@ -11,7 +11,7 @@ Feature: Toggles
     And I should see the toggle "vatu" is turned "off"
 
   Scenario: Request all toggles for an environment as json
-    When I request the toggles json for environment "qa"
+    When I request json for all toggles on environment "qa"
     Then I should receive the json:
       """
       {
@@ -19,3 +19,12 @@ Feature: Toggles
         "vatu": false
       }
       """
+
+  Scenario: Request toggle value for an environment as json
+    When I request json for toggle "queue" on environment "qa"
+    Then I should receive the json:
+    """
+    {
+      "queue": true
+    }
+    """

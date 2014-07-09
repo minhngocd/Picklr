@@ -7,6 +7,10 @@ When(/^I visit the toggles page for environment "([^"]*)"$/) do |environment|
   visit "/features/#{environment}"
 end
 
-When(/^I request the toggles json for environment "([^"]*)"$/) do |environment|
+When(/^I request json for all toggles on environment "([^"]*)"$/) do |environment|
   visit "/features/#{environment}.json"
+end
+
+When(/^I request json for toggle "([^"]*)" on environment "([^"]*)"$/) do |toggle, environment|
+  visit "/features/#{environment}/#{toggle}.json"
 end

@@ -12,4 +12,10 @@ class TogglesValue < ActiveRecord::Base
     end
   end
 
+  def self.toggle_value params
+    toggle = self.find_by environment_name: params[:environment], toggle_name: params[:toggle]
+    return nil if toggle.nil?
+    toggle.value
+  end
+
 end

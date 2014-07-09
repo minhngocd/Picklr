@@ -11,4 +11,8 @@ class EnvironmentsController < ActionController::Base
       format.json { render json: @toggles.inject({}) { |result, toggle| result.merge({toggle.name => toggle.value}) } }
     end
   end
+
+  def show_toggle
+    render json: {params[:toggle] => TogglesValue.toggle_value(environment: params[:env], toggle: params[:toggle])}
+  end
 end

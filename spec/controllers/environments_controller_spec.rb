@@ -33,4 +33,13 @@ describe EnvironmentsController do
     end
   end
 
+  describe "show_toggle" do
+    it "should render json for single toggle" do
+      expect(TogglesValue).to receive(:toggle_value).with(environment: "qa", toggle: "queue").and_return(true)
+      get :show_toggle, env: "qa", toggle: "queue", format: "json"
+      response.should be_success
+      response.body.should == '{"queue":true}'
+    end
+  end
+
 end

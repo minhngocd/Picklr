@@ -28,6 +28,11 @@ describe TogglesValue do
     all_uat_toggles.should contain_toggle Toggle.new "vatu", "VATU", nil, "uat", "description"
   end
 
+  it "should return toggle value given toggle name and environment" do
+    TogglesValue.toggle_value(environment: "qa", toggle: "queue").should == true
+    TogglesValue.toggle_value(environment: "qa", toggle: "vatu").should == false
+  end
+
   RSpec::Matchers.define :contain_toggle do |expected_toggle|
     result = false
     match do |actual_list|
