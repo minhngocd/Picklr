@@ -23,6 +23,14 @@ describe EnvironmentsController do
       response.should be_success
       response.body.should render_template("show")
     end
+
+    it "should render json" do
+      expect(TogglesValue).to receive(:toggles_for_environment).with("qa").and_return(toggles)
+      get :show, env: "qa", format: "json"
+      expect(assigns(:toggles)).to eq(toggles)
+      response.should be_success
+      response.body.should == '{"queue":true,"vatu":false}'
+    end
   end
 
 end
