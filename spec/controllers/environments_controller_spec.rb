@@ -3,8 +3,7 @@ require 'spec_helper'
 describe EnvironmentsController do
 
   let(:environments) {[Environment.new("qa"), Environment.new("uat")]}
-  before do
-  end
+  let(:toggles) {[Toggle.new("queue", "Queue", true, "qa", "description"), Toggle.new("vatu", "VATU", false, "qa", "description")]}
 
   describe "all" do
     it "should show all environments" do
@@ -14,7 +13,16 @@ describe EnvironmentsController do
       response.should be_success
       response.body.should render_template("all")
     end
+  end
 
+  describe "show" do
+    it "should show all toggles for environment" do
+      expect(TogglesValue).to receive(:toggles_for_environment).with("qa").and_return(toggles)
+      get :show, env: "qa"
+      expect(assigns(:toggles)).to eq(toggles)
+      response.should be_success
+      response.body.should render_template("show")
+    end
   end
 
 end

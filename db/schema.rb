@@ -11,35 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140708162032) do
+ActiveRecord::Schema.define(version: 20140709120120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "environments_repositories", force: true do |t|
-    t.string   "name"
+    t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "environments_repositories", ["name"], name: "index_environments_repositories_on_name", unique: true, using: :btree
 
-  create_table "environments_repositories_toggles_repositories", id: false, force: true do |t|
-    t.integer "toggles_repository_id",      null: false
-    t.integer "environments_repository_id", null: false
-    t.boolean "value"
-  end
-
-  add_index "environments_repositories_toggles_repositories", ["toggles_repository_id", "environments_repository_id"], name: "toggle_value_index", using: :btree
-
   create_table "toggles_repositories", force: true do |t|
-    t.string   "name"
-    t.string   "display_name"
+    t.string   "name",         null: false
+    t.string   "display_name", null: false
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "toggles_repositories", ["name"], name: "index_toggles_repositories_on_name", unique: true, using: :btree
+
+  create_table "toggles_values", force: true do |t|
+    t.string   "toggle_name",      null: false
+    t.string   "environment_name", null: false
+    t.boolean  "value",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "toggles_values", ["toggle_name", "environment_name"], name: "index_toggles_values_on_toggle_name_and_environment_name", unique: true, using: :btree
 
 end
