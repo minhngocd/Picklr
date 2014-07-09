@@ -20,6 +20,14 @@ describe TogglesValue do
     all_qa_toggles.should contain_toggle Toggle.new "vatu", "VATU", false, "qa", "description"
   end
 
+  it "should return toggles that are not set for an environment with nil value" do
+    all_uat_toggles = TogglesValue.toggles_for_environment "uat"
+    all_uat_toggles.length.should == 2
+    (all_uat_toggles.first.is_a? Toggle).should == true
+    all_uat_toggles.should contain_toggle Toggle.new "queue", "Queue", true, "uat", "description"
+    all_uat_toggles.should contain_toggle Toggle.new "vatu", "VATU", nil, "uat", "description"
+  end
+
   RSpec::Matchers.define :contain_toggle do |expected_toggle|
     result = false
     match do |actual_list|

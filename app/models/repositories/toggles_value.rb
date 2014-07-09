@@ -1,12 +1,13 @@
 class TogglesValue < ActiveRecord::Base
 
   def self.toggles_for_environment environment
-    self.where(environment_name: environment).map do |toggle_value|
-      toggle_info = TogglesRepository.find_by_name toggle_value.toggle_name
+    TogglesRepository.all.map do |toggle_info|
+      environment_toggle = TogglesValue.find_by(environment_name: environment, toggle_name: toggle_info.name)
+      toggle_value = environment_toggle.value unless environment_toggle.nil?
       Toggle.new(toggle_info.name,
                  toggle_info.display_name,
-                 toggle_value.value,
-                 toggle_value.environment_name,
+                 toggle_value,
+                 environment,
                  toggle_info.description)
     end
   end
