@@ -65,6 +65,29 @@ describe FeaturesController do
     end
   end
 
-  #TODO: 404 CASES
+  describe "toggle" do
+    it "should return 503 if user is not logged in" do
+      allow(controller).to receive(:user_signed_in?).and_return(false)
+      post :toggle, env: "qa", feature: "queue"
+      response.status.should == 401
+      response.body.should == 'Unauthorized Access'
+    end
+
+    it "should toggle feature toggle" do
+      allow(controller).to receive(:user_signed_in?).and_return(true)
+      expect(TogglesRepository).to receive(:toggle).with("qa", "queue")
+      post :toggle, env: "qa", feature: "queue"
+      response.should redirect_to "/features/qa"
+    end
+
+    it "should return 500 if error while trying to update toggle value" do
+      allow(controller).to receive(:user_signed_in?).and_return(true)
+      expect(TogglesRepository).to receive(:toggle).with("qa", "queue").and_raise(Exception.new "Error message")
+      post :toggle, env: "qa", feature: "queue"
+      response.status.should == 500
+      response.body.should == "Error message"
+    end
+  end
+
 
 end

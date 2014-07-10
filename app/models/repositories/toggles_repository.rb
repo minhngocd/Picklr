@@ -19,4 +19,10 @@ class TogglesRepository < ActiveRecord::Base
     toggle.nil? ? false : toggle.value
   end
 
+  def self.toggle environment, feature
+    raise Exception.new "Make sure environment and feature exists!" unless EnvironmentsRepository.find_by_name(environment) && FeaturesRepository.find_by_name(feature)
+
+    toggle = self.find_or_create_by! environment_name: environment, feature_name: feature
+    toggle.update_attributes!(value: !toggle.value)
+  end
 end

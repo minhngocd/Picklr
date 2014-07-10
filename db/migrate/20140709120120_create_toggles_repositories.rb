@@ -3,7 +3,7 @@ class CreateTogglesRepositories < ActiveRecord::Migration
     create_table :toggles_repositories do |t|
       t.string :feature_name, :null => false
       t.string :environment_name, :null => false
-      t.boolean :value, :null => false
+      t.boolean :value, :null => false, :default => false
 
       t.timestamps
     end

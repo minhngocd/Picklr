@@ -1,4 +1,4 @@
-Feature: Authentication and Authorisation
+Feature: Authentication
 
   Scenario: User login
     Given I have admin "admin@zopa.com"
@@ -13,3 +13,4 @@ Feature: Authentication and Authorisation
     Then I should see "Logged in as admin@zopa.com"
     And I should see the logout link
     And I should not see the login link
+

@@ -3,6 +3,12 @@
         <li id="<%= toggle.name %>">
             <div><%= toggle.display_name %></div>
             <div class="toggle <%= toggle.value ? "on" : "off" %>"><%= toggle.value %></div>
+            <% if user_signed_in? %>
+                <%= button_to "Toggle",
+                              {controller: "features", action: "toggle", feature: toggle.name},
+                              {class: "toggle-button"}
+                %>
+            <% end %>
         </li>
     <% end %>
 </ul>
