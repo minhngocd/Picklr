@@ -2,35 +2,56 @@ require 'spec_helper'
 
 describe TogglesRepository do
 
-
   before do
+    EnvironmentsRepository.create!(name: "qa")
+    EnvironmentsRepository.create!(name: "uat")
     FeaturesRepository.create!(name: "queue", display_name: "Queue", description: "description")
     FeaturesRepository.create!(name: "vatu", display_name: "VATU", description: "description")
-    TogglesRepository.create!(feature_name: "queue", environment_name: "qa"  , value: true)
-    TogglesRepository.create!(feature_name: "vatu", environment_name: "qa"  , value: false)
-    TogglesRepository.create!(feature_name: "queue", environment_name: "uat" , value: true)
+    TogglesRepository.create!(feature_name: "queue", environment_name: "qa", value: true)
+    TogglesRepository.create!(feature_name: "vatu", environment_name: "qa", value: false)
+    TogglesRepository.create!(feature_name: "queue", environment_name: "uat", value: true)
     TogglesRepository.create!(feature_name: "queue", environment_name: "prod", value: true)
   end
 
-  it "should return all toggles for a given environment" do
-    all_qa_toggles = TogglesRepository.all_for "qa"
-    all_qa_toggles.length.should == 2
-    (all_qa_toggles.first.is_a? Toggle).should == true
-    all_qa_toggles.should contain_toggle Toggle.new "queue", "Queue", true, "qa", "description"
-    all_qa_toggles.should contain_toggle Toggle.new "vatu", "VATU", false, "qa", "description"
+  describe "all toggles" do
+    it "should return all toggles for a given environment" do
+      all_qa_toggles = TogglesRepository.all_for "qa"
+      all_qa_toggles.length.should == 2
+      (all_qa_toggles.first.is_a? Toggle).should == true
+      all_qa_toggles.should contain_toggle Toggle.new "queue", "Queue", true, "qa", "description"
+      all_qa_toggles.should contain_toggle Toggle.new "vatu", "VATU", false, "qa", "description"
+    end
+
+    it "should return default false value for toggles not set for environment" do
+      all_uat_toggles = TogglesRepository.all_for "uat"
+      all_uat_toggles.length.should == 2
+      (all_uat_toggles.first.is_a? Toggle).should == true
+      all_uat_toggles.should contain_toggle Toggle.new "queue", "Queue", true, "uat", "description"
+      all_uat_toggles.should contain_toggle Toggle.new "vatu", "VATU", false, "uat", "description"
+    end
+
+    it "should return nil if environment doesn't exist" do
+      TogglesRepository.all_for("prod").should == nil
+    end
   end
 
-  it "should return toggles that are not set for an environment with nil value" do
-    all_uat_toggles = TogglesRepository.all_for "uat"
-    all_uat_toggles.length.should == 2
-    (all_uat_toggles.first.is_a? Toggle).should == true
-    all_uat_toggles.should contain_toggle Toggle.new "queue", "Queue", true, "uat", "description"
-    all_uat_toggles.should contain_toggle Toggle.new "vatu", "VATU", nil, "uat", "description"
-  end
+  describe "single toggle value" do
+    it "should return toggle value given toggle name and environment" do
+      TogglesRepository.value_for("qa", "queue").should == true
+      TogglesRepository.value_for("qa", "vatu").should == false
+    end
 
-  it "should return toggle value given toggle name and environment" do
-    TogglesRepository.value_for(environment: "qa", feature: "queue").should == true
-    TogglesRepository.value_for(environment: "qa", feature: "vatu").should == false
+    it "should return nil if environment doesn't exist" do
+      TogglesRepository.value_for("prod", "queue").should == nil
+    end
+
+    it "should return nil if feature doesn't exist" do
+      TogglesRepository.value_for("qa", "some_feature").should == nil
+    end
+
+    it "should return false if feature is not set for environment" do
+      TogglesRepository.value_for("uat", "vatu").should == false
+    end
   end
 
   RSpec::Matchers.define :contain_toggle do |expected_toggle|
