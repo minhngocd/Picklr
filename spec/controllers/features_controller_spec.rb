@@ -17,7 +17,7 @@ describe FeaturesController do
 
   describe "show" do
     it "should show all toggles for environment" do
-      expect(TogglesValue).to receive(:toggles_for_environment).with("qa").and_return(toggles)
+      expect(TogglesRepository).to receive(:all_for).with("qa").and_return(toggles)
       get :show, env: "qa"
       expect(assigns(:toggles)).to eq(toggles)
       response.should be_success
@@ -25,7 +25,7 @@ describe FeaturesController do
     end
 
     it "should render json" do
-      expect(TogglesValue).to receive(:toggles_for_environment).with("qa").and_return(toggles)
+      expect(TogglesRepository).to receive(:all_for).with("qa").and_return(toggles)
       get :show, env: "qa", format: "json"
       expect(assigns(:toggles)).to eq(toggles)
       response.should be_success
@@ -35,7 +35,7 @@ describe FeaturesController do
 
   describe "show_toggle" do
     it "should render json for single toggle" do
-      expect(TogglesValue).to receive(:toggle_value).with(environment: "qa", feature: "queue").and_return(true)
+      expect(TogglesRepository).to receive(:value_for).with(environment: "qa", feature: "queue").and_return(true)
       get :show_toggle, env: "qa", feature: "queue", format: "json"
       response.should be_success
       response.body.should == '{"queue":true}'
