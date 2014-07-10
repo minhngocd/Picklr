@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe FeaturesController do
 
-  let(:environments) {[Environment.new("qa"), Environment.new("uat")]}
+  let(:environments) {["qa","uat"]}
   let(:toggles) {[Toggle.new("queue", "Queue", true, "qa", "description"), Toggle.new("vatu", "VATU", false, "qa", "description")]}
 
   describe "all" do

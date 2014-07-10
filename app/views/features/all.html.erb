@@ -1,5 +1,5 @@
 <ul id="environment-list">
     <% @environments.each do |environment| %>
-        <li><%= link_to environment.name, "/features/#{environment.name}" %></li>
+        <li><%= link_to environment, "/features/#{environment}" %></li>
     <% end %>
 </ul>
