@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe EnvironmentsController do
+describe FeaturesController do
 
   let(:environments) {[Environment.new("qa"), Environment.new("uat")]}
   let(:toggles) {[Toggle.new("queue", "Queue", true, "qa", "description"), Toggle.new("vatu", "VATU", false, "qa", "description")]}
@@ -41,5 +41,7 @@ describe EnvironmentsController do
       response.body.should == '{"queue":true}'
     end
   end
+
+  #TODO: 404 CASES
 
 end

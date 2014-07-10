@@ -1,4 +1,4 @@
-class EnvironmentsController < ActionController::Base
+class FeaturesController < ActionController::Base
 
   def all
     @environments = EnvironmentsRepository.all_environments
