@@ -4,12 +4,12 @@ describe TogglesValue do
 
 
   before do
-    TogglesRepository.create!(name: "queue", display_name: "Queue", description: "description")
-    TogglesRepository.create!(name: "vatu", display_name: "VATU", description: "description")
-    TogglesValue.create!(toggle_name: "queue", environment_name: "qa"  , value: true)
-    TogglesValue.create!(toggle_name: "vatu", environment_name: "qa"  , value: false)
-    TogglesValue.create!(toggle_name: "queue", environment_name: "uat" , value: true)
-    TogglesValue.create!(toggle_name: "queue", environment_name: "prod", value: true)
+    FeaturesRepository.create!(name: "queue", display_name: "Queue", description: "description")
+    FeaturesRepository.create!(name: "vatu", display_name: "VATU", description: "description")
+    TogglesValue.create!(feature_name: "queue", environment_name: "qa"  , value: true)
+    TogglesValue.create!(feature_name: "vatu", environment_name: "qa"  , value: false)
+    TogglesValue.create!(feature_name: "queue", environment_name: "uat" , value: true)
+    TogglesValue.create!(feature_name: "queue", environment_name: "prod", value: true)
   end
 
   it "should return all toggles for a given environment" do
@@ -29,8 +29,8 @@ describe TogglesValue do
   end
 
   it "should return toggle value given toggle name and environment" do
-    TogglesValue.toggle_value(environment: "qa", toggle: "queue").should == true
-    TogglesValue.toggle_value(environment: "qa", toggle: "vatu").should == false
+    TogglesValue.toggle_value(environment: "qa", feature: "queue").should == true
+    TogglesValue.toggle_value(environment: "qa", feature: "vatu").should == false
   end
 
   RSpec::Matchers.define :contain_toggle do |expected_toggle|

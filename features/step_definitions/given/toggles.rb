@@ -1,6 +1,6 @@
 
-Given(/^I have toggle "([^"]*)" turned "([^"]*)" for environment "([^"]*)"$/) do |toggle_name, switch, environment|
-  underscore_toggle_name = toggle_name.downcase.split.join("_")
-  TogglesRepository.create! name: underscore_toggle_name, display_name: toggle_name
-  TogglesValue.create! toggle_name: underscore_toggle_name, environment_name: environment, value: switch == "on" ? true : false
+Given(/^I have feature "([^"]*)" toggled "([^"]*)" for environment "([^"]*)"$/) do |feature, toggle, environment|
+  underscore_feature_name = feature.downcase.split.join("_")
+  FeaturesRepository.create! name: underscore_feature_name, display_name: feature
+  TogglesValue.create! feature_name: underscore_feature_name, environment_name: environment, value: toggle == "on" ? true : false
 end

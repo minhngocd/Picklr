@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20140709120120) do
 
   add_index "environments_repositories", ["name"], name: "index_environments_repositories_on_name", unique: true, using: :btree
 
-  create_table "toggles_repositories", force: true do |t|
+  create_table "features_repositories", force: true do |t|
     t.string   "name",         null: false
     t.string   "display_name", null: false
     t.text     "description"
@@ -32,16 +32,16 @@ ActiveRecord::Schema.define(version: 20140709120120) do
     t.datetime "updated_at"
   end
 
-  add_index "toggles_repositories", ["name"], name: "index_toggles_repositories_on_name", unique: true, using: :btree
+  add_index "features_repositories", ["name"], name: "index_features_repositories_on_name", unique: true, using: :btree
 
   create_table "toggles_values", force: true do |t|
-    t.string   "toggle_name",      null: false
+    t.string   "feature_name",     null: false
     t.string   "environment_name", null: false
     t.boolean  "value",            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "toggles_values", ["toggle_name", "environment_name"], name: "index_toggles_values_on_toggle_name_and_environment_name", unique: true, using: :btree
+  add_index "toggles_values", ["feature_name", "environment_name"], name: "index_toggles_values_on_feature_name_and_environment_name", unique: true, using: :btree
 
 end

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   get '/features' => 'features#all'
   get '/features/:env' => 'features#show'
-  get '/features/:env/:toggle' => 'features#show_toggle'
+  get '/features/:env/:feature' => 'features#show_toggle'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

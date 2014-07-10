@@ -1,7 +1,7 @@
-Then(/^I should be taken to the toggles page for the "([^"]*)" environment$/) do |environment|
+Then(/^I should be taken to the feature toggles page for the "([^"]*)" environment$/) do |environment|
   current_path.should == "/features/#{environment}"
 end
 
-Then(/^I should see the toggle "([^"]*)" is turned "([^"]*)"$/) do |toggle_name, switch|
-  find(:css, "##{toggle_name.downcase.split.join("_")} .switch")["class"].should include switch
+Then(/^I should see the feature "([^"]*)" is toggled "([^"]*)"$/) do |feature, toggle|
+  find(:css, "##{feature.downcase.split.join("_")} .toggle")["class"].should include toggle
 end

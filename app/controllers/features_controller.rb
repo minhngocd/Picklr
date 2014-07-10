@@ -13,6 +13,6 @@ class FeaturesController < ActionController::Base
   end
 
   def show_toggle
-    render json: {params[:toggle] => TogglesValue.toggle_value(environment: params[:env], toggle: params[:toggle])}
+    render json: {params[:feature] => TogglesValue.toggle_value(environment: params[:env], feature: params[:feature])}
   end
 end
