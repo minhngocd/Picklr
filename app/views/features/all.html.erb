@@ -1,5 +1,11 @@
 <ul id="environment-list">
     <% @environments.each do |environment| %>
-        <li><%= link_to environment, "/features/#{environment}" %></li>
+        <li id="<%= environment %>">
+            <%= link_to environment, "/features/#{environment}" %>
+        </li>
     <% end %>
 </ul>
+
+<% if user_signed_in? %>
+    <%= button_to "Add new feature", {controller: "features", action: "new_feature"} %>
+<% end %>

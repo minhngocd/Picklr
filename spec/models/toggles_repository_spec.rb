@@ -76,6 +76,28 @@ describe TogglesRepository do
     end
   end
 
+  describe "toggle with given value" do
+    it "should toggle the value of a feature toggle" do
+      TogglesRepository.toggle_with_value("qa","queue", false)
+      TogglesRepository.value_for("qa","queue").should == false
+      TogglesRepository.toggle_with_value("qa","vatu", true)
+      TogglesRepository.value_for("qa","vatu").should == true
+    end
+
+    it "should create the toggle value if not already set" do
+      TogglesRepository.toggle_with_value("uat","vatu", true)
+      TogglesRepository.value_for("uat", "vatu").should == true
+    end
+
+    it "should raise exception if environment doesn't exist" do
+      lambda{TogglesRepository.toggle_with_value("qa", "some_feature", true)}.should raise_exception
+    end
+
+    it "should raise exception if feature doesn't exist" do
+      lambda{TogglesRepository.toggle_with_value("prod", "queue", true)}.should raise_exception
+    end
+  end
+
   RSpec::Matchers.define :contain_toggle do |expected_toggle|
     result = false
     match do |actual_list|

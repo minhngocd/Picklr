@@ -14,3 +14,11 @@ Feature: Authorisation
     When I login as "admin@zopa.com"
     And I visit the feature toggles page for environment "qa"
     Then I should see the toggle button for "queue"
+
+  Scenario: Seeing the add feature button
+    When I visit the base page
+    Then I should not see the add feature button
+
+    When I login as "admin@zopa.com"
+    And I visit the base page
+    Then I should see the add feature button

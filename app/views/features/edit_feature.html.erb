@@ -1,0 +1,12 @@
+<h1>Edit <%= params[:feature] %></h1>
+
+<%= form_tag({controller: "features", action: "update_feature"}, method: "put") do %>
+    <% @environment_toggle_values.each do |environment, toggle_value| %>
+        <div id="<%= environment %>">
+            <%= check_box_tag "environments[]", environment, toggle_value %>
+            <%= label_tag environment %>
+        </div>
+        </div>
+    <% end %>
+    <%= submit_tag "Complete" %>
+<% end %>
