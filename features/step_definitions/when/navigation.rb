@@ -4,15 +4,15 @@ end
 
 
 When(/^I visit the feature toggles page for environment "([^"]*)"$/) do |environment|
-  visit "/features/#{environment}"
+  visit "/environments/#{environment}"
 end
 
 When(/^I request json for all feature toggles on environment "([^"]*)"$/) do |environment|
-  visit "/features/#{environment}.json"
+  visit "/environments/#{environment}.json"
 end
 
 When(/^I request json for feature "([^"]*)" on environment "([^"]*)"$/) do |feature, environment|
-  visit "/features/#{environment}/#{feature}.json"
+  visit "/environments/#{environment}/#{feature}.json"
 end
 
 When(/^I visit the edit toggle values page for feature "([^"]*)"$/) do |feature|
