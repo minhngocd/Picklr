@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe TogglesRepository do
 
+  let(:qa) { Environment.new "qa" }
+  let(:uat) { Environment.new "uat" }
+  let(:queue) { ApplicationFeature.new "queue", "description" }
+  let(:vatu) { ApplicationFeature.new "vatu", "description" }
   before do
     EnvironmentsRepository.create!(name: "qa")
     EnvironmentsRepository.create!(name: "uat")
@@ -18,16 +22,16 @@ describe TogglesRepository do
       all_qa_toggles = TogglesRepository.all_for "qa"
       all_qa_toggles.length.should == 2
       (all_qa_toggles.first.is_a? Toggle).should == true
-      all_qa_toggles.should contain_toggle Toggle.new "queue", true, "qa", "description"
-      all_qa_toggles.should contain_toggle Toggle.new "vatu", false, "qa", "description"
+      all_qa_toggles.should contain_toggle Toggle.new queue, qa, true
+      all_qa_toggles.should contain_toggle Toggle.new vatu, qa, false
     end
 
     it "should return default false value for toggles not set for environment" do
       all_uat_toggles = TogglesRepository.all_for "uat"
       all_uat_toggles.length.should == 2
       (all_uat_toggles.first.is_a? Toggle).should == true
-      all_uat_toggles.should contain_toggle Toggle.new "queue", true, "uat", "description"
-      all_uat_toggles.should contain_toggle Toggle.new "vatu", false, "uat", "description"
+      all_uat_toggles.should contain_toggle Toggle.new queue, uat, true
+      all_uat_toggles.should contain_toggle Toggle.new vatu, uat, false
     end
 
     it "should return nil if environment doesn't exist" do
@@ -111,9 +115,9 @@ describe TogglesRepository do
     end
 
     def toggle_match?(expected_toggle, listed_toggle)
-      listed_toggle.name == expected_toggle.name &&
-          listed_toggle.description == expected_toggle.description &&
-          listed_toggle.environment == expected_toggle.environment &&
+      listed_toggle.feature.name == expected_toggle.feature.name &&
+          listed_toggle.feature.description == expected_toggle.feature.description &&
+          listed_toggle.environment.name == expected_toggle.environment.name &&
           listed_toggle.value == expected_toggle.value
     end
   end

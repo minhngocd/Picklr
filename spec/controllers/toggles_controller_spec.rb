@@ -2,7 +2,10 @@ require 'spec_helper'
 
 describe TogglesController do
 
-  let(:toggles) { [Toggle.new("queue", true, "qa", "description"), Toggle.new("vatu", false, "qa", "description")] }
+  let(:qa) { Environment.new "qa" }
+  let(:vatu) { ApplicationFeature.new "vatu", "description" }
+  let(:queue) { ApplicationFeature.new "queue", "description" }
+  let(:toggles) { [Toggle.new(queue, qa, true), Toggle.new(vatu, qa, false)] }
   let(:user) { User.create! email: "test@test.com", password: "password", password_confirmation: "password", admin: true }
 
   describe "all" do

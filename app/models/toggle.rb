@@ -1,11 +1,10 @@
 class Toggle
-  attr_accessor :name, :value, :environment, :description
+  attr_accessor :feature, :environment, :value
 
-  def initialize name, value, environment, description = ""
-    @name = name
-    @value = value
+  def initialize feature, environment, value
+    @feature = feature
     @environment = environment
-    @description = description
+    @value = value
   end
 
 end
