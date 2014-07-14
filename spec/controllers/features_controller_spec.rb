@@ -142,4 +142,35 @@ describe FeaturesController do
     end
   end
 
+  describe "create feature" do
+    it "should return 503 if user is not logged in" do
+      post :create_feature, name: "queue", display_name: "queue", description: ""
+      response.should redirect_to "/users/sign_in"
+    end
+
+    it "should create feature" do
+      sign_in :user, user
+      expect(FeaturesRepository).to receive(:create_feature).with("queue","queue","")
+      post :create_feature, name: "queue", display_name: "queue", description: ""
+      flash[:notice].should eq("Feature created!")
+      response.should redirect_to "/feature/edit/queue"
+    end
+
+    it "should display errors on validation" do
+      sign_in :user, user
+      expect(FeaturesRepository).to_not receive(:create_feature)
+      post :create_feature, name: "queue ", display_name: "queue", description: ""
+      flash[:alert].should include "Name only allows letters, numbers, and underscores"
+      response.should redirect_to "/feature/new"
+    end
+
+    it "should return 500 if error while trying to update toggle value" do
+      sign_in :user, user
+      expect(FeaturesRepository).to receive(:create_feature).and_raise(Exception.new "Error message")
+      post :create_feature, name: "queue", display_name: "queue", description: ""
+      response.status.should == 500
+      response.body.should == "Error message"
+    end
+
+  end
 end

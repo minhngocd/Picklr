@@ -10,3 +10,7 @@ end
 And(/^I should see notice "([^"]*)"$/) do |notice|
   find(:css, ".alert").text.should include notice
 end
+
+Then(/^I should see error "([^"]*)"$/) do |error|
+  find(:css, ".alert-danger").text.should include error
+end

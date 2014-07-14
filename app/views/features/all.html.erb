@@ -7,5 +7,5 @@
 </ul>
 
 <% if user_signed_in? %>
-    <%= button_to "Add new feature", {controller: "features", action: "new_feature"} %>
+    <%= button_to "Add new feature", {controller: "features", action: "new_feature"}, method: "get" %>
 <% end %>

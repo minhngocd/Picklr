@@ -1,5 +1,5 @@
 class FeaturesController < ApplicationController
-  before_filter :authenticate_user!, only: [:toggle, :edit_feature, :update_feature]
+  before_filter :authenticate_user!, only: [:toggle, :edit_feature, :update_feature, :create_feature]
 
   def all
     @environments = EnvironmentsRepository.all_environments
@@ -52,5 +52,26 @@ class FeaturesController < ApplicationController
     rescue Exception => exception
       render text: exception.message, status: 500
     end
+  end
+
+  def create_feature
+    begin
+      feature = ApplicationFeature.new(params[:name], params[:display_name], params[:description])
+
+      if feature.valid?
+        FeaturesRepository.create_feature(feature.name, feature.display_name, feature.description)
+
+        flash[:notice] = "Feature created!"
+        redirect_to action: :edit_feature, status: 302, feature: params[:name]
+      else
+        flash[:alert] = feature.errors.full_messages
+        redirect_to action: :new_feature
+      end
+    rescue Exception => exception
+      render text: exception.message, status: 500
+    end
+  end
+
+  def new_feature
   end
 end

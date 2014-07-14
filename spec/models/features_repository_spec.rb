@@ -23,4 +23,13 @@ describe FeaturesRepository do
       EnvironmentsRepository.all_environments.should == []
     end
   end
+
+  describe "create" do
+    it "should create new feature" do
+      FeaturesRepository.all_features.length.should == 0
+      FeaturesRepository.create_feature("test4", "Test 4", "")
+      FeaturesRepository.all_features.length.should == 1
+      FeaturesRepository.all_features.first.should == "test4"
+    end
+  end
 end
