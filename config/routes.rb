@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: "features#all"
+  root to: "environments#all"
+
+  #Browsing
+  get '/environments' => 'environments#all'               #show all available environments
+
 
   #Toggle Management
-  get '/features' => 'features#all'                       #all available environments
   get '/features/:env' => 'features#show'                 #html+json all toggles for env
   get '/features/:env/:feature' => 'features#show_toggle' #json single toggle for env
   post '/features/:env/:feature' => 'features#toggle'     #action toggle given toggle

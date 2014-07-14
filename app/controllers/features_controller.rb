@@ -1,10 +1,6 @@
 class FeaturesController < ApplicationController
   before_filter :authenticate_user!, only: [:toggle, :edit_feature, :update_feature, :create_feature]
 
-  def all
-    @environments = EnvironmentsRepository.all_environments
-  end
-
   def show
     @environment = params[:env]
     @toggles = TogglesRepository.all_for @environment
@@ -48,7 +44,7 @@ class FeaturesController < ApplicationController
         TogglesRepository.toggle_with_value(environment, params[:feature], toggle_value)
       end
       flash[:notice] = "Feature updated"
-      redirect_to action: :all, status: 302
+      redirect_to controller: :environments, action: :all, status: 302
     rescue Exception => exception
       render text: exception.message, status: 500
     end

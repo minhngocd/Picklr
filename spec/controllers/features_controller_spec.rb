@@ -6,17 +6,6 @@ describe FeaturesController do
   let(:toggles) { [Toggle.new("queue", "Queue", true, "qa", "description"), Toggle.new("vatu", "VATU", false, "qa", "description")] }
   let(:user) { User.create! email: "test@test.com", password: "password", password_confirmation: "password", admin: true }
 
-
-  describe "all" do
-    it "should show all environments" do
-      expect(EnvironmentsRepository).to receive(:all_environments).and_return(environments)
-      get :all
-      expect(assigns(:environments)).to eq(environments)
-      response.should be_success
-      response.body.should render_template("all")
-    end
-  end
-
   describe "show" do
     it "should show all toggles for environment" do
       expect(TogglesRepository).to receive(:all_for).with("qa").and_return(toggles)
