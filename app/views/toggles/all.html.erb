@@ -5,7 +5,7 @@
             <div class="toggle <%= toggle.value ? "on" : "off" %>"><%= toggle.value %></div>
             <% if user_signed_in? %>
                 <%= button_to "Toggle",
-                              {controller: "features", action: "toggle", feature: toggle.name},
+                              {controller: "toggles", action: "toggle", feature: toggle.name},
                               {class: "toggle-button"}
                 %>
             <% end %>

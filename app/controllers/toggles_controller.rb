@@ -1,4 +1,5 @@
 class TogglesController < ApplicationController
+  before_filter :authenticate_user!, only: [:toggle]
 
   def all
     @environment = params[:env]
@@ -18,4 +19,12 @@ class TogglesController < ApplicationController
     render json: {params[:feature] => toggle}
   end
 
+  def toggle
+    begin
+      TogglesRepository.toggle(params[:env], params[:feature])
+      redirect_to action: :all, status: 302
+    rescue Exception => exception
+      render text: exception.message, status: 500
+    end
+  end
 end

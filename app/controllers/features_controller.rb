@@ -1,14 +1,5 @@
 class FeaturesController < ApplicationController
-  before_filter :authenticate_user!, only: [:toggle, :edit_feature, :update_feature, :create_feature]
-
-  def toggle
-    begin
-      TogglesRepository.toggle(params[:env], params[:feature])
-      redirect_to controller: :toggles, action: :all, status: 302
-    rescue Exception => exception
-      render text: exception.message, status: 500
-    end
-  end
+  before_filter :authenticate_user!, only: [:edit_feature, :update_feature, :create_feature]
 
   def edit_feature
     all_environments = EnvironmentsRepository.all_environments

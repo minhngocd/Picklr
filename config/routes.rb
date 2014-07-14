@@ -4,11 +4,11 @@ Rails.application.routes.draw do
 
   #Browsing
   get '/environments' => 'environments#all'               #show all available environments
-  get '/environments/:env' => 'toggles#all'                 #html+json all toggles for env
-  get '/environments/:env/:feature' => 'toggles#show' #json single toggle for env
+  get '/environments/:env' => 'toggles#all'               #html+json all toggles for env
+  get '/environments/:env/:feature' => 'toggles#show'     #json single toggle for env
 
   #Toggle Management
-  post '/features/:env/:feature' => 'features#toggle'     #action toggle given toggle
+  post '/environments/:env/:feature' => 'toggles#toggle'  #toggle given toggle
 
   #Feature Management
   get '/feature/new' => 'features#new_feature'            #new feature

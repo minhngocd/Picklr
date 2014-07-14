@@ -2,31 +2,7 @@ require 'spec_helper'
 
 describe FeaturesController do
 
-  let(:environments) { ["qa", "uat"] }
-  let(:toggles) { [Toggle.new("queue", "Queue", true, "qa", "description"), Toggle.new("vatu", "VATU", false, "qa", "description")] }
   let(:user) { User.create! email: "test@test.com", password: "password", password_confirmation: "password", admin: true }
-
-  describe "toggle" do
-    it "should return 503 if user is not logged in" do
-      post :toggle, env: "qa", feature: "queue"
-      response.should redirect_to "/users/sign_in"
-    end
-
-    it "should toggle feature toggle" do
-      sign_in :user, user
-      expect(TogglesRepository).to receive(:toggle).with("qa", "queue")
-      post :toggle, env: "qa", feature: "queue"
-      response.should redirect_to "/environments/qa"
-    end
-
-    it "should return 500 if error while trying to update toggle value" do
-      sign_in :user, user
-      expect(TogglesRepository).to receive(:toggle).with("qa", "queue").and_raise(Exception.new "Error message")
-      post :toggle, env: "qa", feature: "queue"
-      response.status.should == 500
-      response.body.should == "Error message"
-    end
-  end
 
   describe "edit feature" do
     it "should return 503 if user is not logged in" do
