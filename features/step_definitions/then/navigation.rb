@@ -7,9 +7,9 @@ Then(/^I should be taken to the base features page$/) do
 end
 
 Then(/^I should be taken to the add new feature page$/) do
-  current_path.should == "/feature/new"
+  current_path.should == "/features/new"
 end
 
 Then(/^I should be taken to the edit toggle values page for feature "([^"]*)"$/) do |feature|
-  current_path.should == "/feature/edit/#{feature}"
+  current_path.should == "/features/#{feature}/edit"
 end

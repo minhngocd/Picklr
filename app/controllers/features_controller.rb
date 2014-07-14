@@ -1,7 +1,7 @@
 class FeaturesController < ApplicationController
-  before_filter :authenticate_user!, only: [:edit_feature, :update_feature, :create_feature]
+  before_filter :authenticate_user!, only: [:edit, :update, :create]
 
-  def edit_feature
+  def edit
     all_environments = EnvironmentsRepository.all_environments
     @environment_toggle_values = all_environments.inject({}) do |result, environment|
       toggle_value = TogglesRepository.value_for environment, params[:feature]
@@ -10,7 +10,7 @@ class FeaturesController < ApplicationController
     end
   end
 
-  def update_feature
+  def update
     begin
       EnvironmentsRepository.all_environments.each do |environment|
         toggle_value = params[:environments].include? environment
@@ -23,7 +23,7 @@ class FeaturesController < ApplicationController
     end
   end
 
-  def create_feature
+  def create
     begin
       feature = ApplicationFeature.new(params[:name], params[:display_name], params[:description])
 
@@ -31,16 +31,16 @@ class FeaturesController < ApplicationController
         FeaturesRepository.create_feature(feature.name, feature.display_name, feature.description)
 
         flash[:notice] = "Feature created!"
-        redirect_to action: :edit_feature, status: 302, feature: params[:name]
+        redirect_to action: :edit, status: 302, feature: params[:name]
       else
         flash[:alert] = feature.errors.full_messages
-        redirect_to action: :new_feature
+        redirect_to action: :new
       end
     rescue Exception => exception
       render text: exception.message, status: 500
     end
   end
 
-  def new_feature
+  def new
   end
 end

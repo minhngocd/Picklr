@@ -16,5 +16,5 @@ When(/^I request json for feature "([^"]*)" on environment "([^"]*)"$/) do |feat
 end
 
 When(/^I visit the edit toggle values page for feature "([^"]*)"$/) do |feature|
-  visit "/feature/edit/#{feature}"
+  visit "/features/#{feature}/edit"
 end
