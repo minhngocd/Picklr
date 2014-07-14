@@ -2,7 +2,6 @@ class CreateFeaturesRepositories < ActiveRecord::Migration
   def change
     create_table :features_repositories do |t|
       t.string :name, :null => false
-      t.string :display_name, :null => false
       t.text :description
 
       t.timestamps

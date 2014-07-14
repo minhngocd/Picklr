@@ -5,7 +5,6 @@ class TogglesRepository < ActiveRecord::Base
     FeaturesRepository.all.map do |feature|
       toggle = TogglesRepository.find_by(environment_name: environment, feature_name: feature.name)
       Toggle.new(feature.name,
-                 feature.display_name,
                  toggle.nil? ? false : toggle.value,
                  environment,
                  feature.description)

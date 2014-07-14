@@ -25,10 +25,10 @@ class FeaturesController < ApplicationController
 
   def create
     begin
-      feature = ApplicationFeature.new(params[:name], params[:display_name], params[:description])
+      feature = ApplicationFeature.new(params[:name], params[:description])
 
       if feature.valid?
-        FeaturesRepository.create_feature(feature.name, feature.display_name, feature.description)
+        FeaturesRepository.create_feature(feature.name, feature.description)
 
         flash[:notice] = "Feature created!"
         redirect_to action: :edit, status: 302, feature: params[:name]

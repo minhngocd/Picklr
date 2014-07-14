@@ -14,10 +14,8 @@ Feature: New Feature
 
     When I click the create new feature button
     Then I should see error "Name can't be blank"
-    And I should see error "Display name can't be blank"
 
     When I fill out field "name" with "new_feature"
-    And I fill out field "display name" with "New Feature"
     And I click the create new feature button
     Then I should be taken to the edit toggle values page for feature "new_feature"
 

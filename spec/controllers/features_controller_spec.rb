@@ -73,14 +73,14 @@ describe FeaturesController do
 
   describe "create" do
     it "should redirect to login if user is not logged in" do
-      post :create, name: "queue", display_name: "queue", description: ""
+      post :create, name: "queue", description: ""
       response.should redirect_to "/users/sign_in"
     end
 
     it "should create feature" do
       sign_in :user, user
-      expect(FeaturesRepository).to receive(:create_feature).with("queue","queue","")
-      post :create, name: "queue", display_name: "queue", description: ""
+      expect(FeaturesRepository).to receive(:create_feature).with("queue","")
+      post :create, name: "queue", description: ""
       flash[:notice].should eq("Feature created!")
       response.should redirect_to "/features/queue/edit"
     end
@@ -88,7 +88,7 @@ describe FeaturesController do
     it "should display errors on validation" do
       sign_in :user, user
       expect(FeaturesRepository).to_not receive(:create_feature)
-      post :create, name: "queue ", display_name: "queue", description: ""
+      post :create, name: "queue ", description: ""
       flash[:alert].should include "Name only allows letters, numbers, and underscores"
       response.should redirect_to "/features/new"
     end
@@ -96,7 +96,7 @@ describe FeaturesController do
     it "should return 500 if error while trying to update toggle value" do
       sign_in :user, user
       expect(FeaturesRepository).to receive(:create_feature).and_raise(Exception.new "Error message")
-      post :create, name: "queue", display_name: "queue", description: ""
+      post :create, name: "queue", description: ""
       response.status.should == 500
       response.body.should == "Error message"
     end

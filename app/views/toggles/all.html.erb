@@ -1,7 +1,7 @@
 <ul id="toggles">
     <% @toggles.each do |toggle| %>
         <li id="<%= toggle.name %>">
-            <div><%= toggle.display_name %></div>
+            <div><%= toggle.name %></div>
             <div class="toggle <%= toggle.value ? "on" : "off" %>"><%= toggle.value %></div>
             <% if user_signed_in? %>
                 <%= button_to "Toggle",

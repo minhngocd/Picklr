@@ -4,8 +4,8 @@ class FeaturesRepository < ActiveRecord::Base
     self.all.map{|feature| feature.name}
   end
 
-  def self.create_feature name, display_name, description
-    self.create!(name: name, display_name: display_name, description: description)
+  def self.create_feature name, description
+    self.create!(name: name, description: description)
   end
 
 end

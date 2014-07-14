@@ -4,9 +4,9 @@ describe FeaturesRepository do
 
   describe "with data" do
     before do
-      FeaturesRepository.create!(name: "test1", display_name: "Test 1", description: "description")
-      FeaturesRepository.create!(name: "test2", display_name: "Test 2", description: "description")
-      FeaturesRepository.create!(name: "test3", display_name: "Test 3", description: "description")
+      FeaturesRepository.create!(name: "test1", description: "description")
+      FeaturesRepository.create!(name: "test2", description: "description")
+      FeaturesRepository.create!(name: "test3", description: "description")
     end
 
     it "should find all toggles" do
@@ -27,7 +27,7 @@ describe FeaturesRepository do
   describe "create" do
     it "should create new feature" do
       FeaturesRepository.all_features.length.should == 0
-      FeaturesRepository.create_feature("test4", "Test 4", "")
+      FeaturesRepository.create_feature("test4", "")
       FeaturesRepository.all_features.length.should == 1
       FeaturesRepository.all_features.first.should == "test4"
     end

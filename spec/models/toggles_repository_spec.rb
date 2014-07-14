@@ -5,8 +5,8 @@ describe TogglesRepository do
   before do
     EnvironmentsRepository.create!(name: "qa")
     EnvironmentsRepository.create!(name: "uat")
-    FeaturesRepository.create!(name: "queue", display_name: "Queue", description: "description")
-    FeaturesRepository.create!(name: "vatu", display_name: "VATU", description: "description")
+    FeaturesRepository.create!(name: "queue", description: "description")
+    FeaturesRepository.create!(name: "vatu", description: "description")
     TogglesRepository.create!(feature_name: "queue", environment_name: "qa", value: true)
     TogglesRepository.create!(feature_name: "vatu", environment_name: "qa", value: false)
     TogglesRepository.create!(feature_name: "queue", environment_name: "uat", value: true)
@@ -18,16 +18,16 @@ describe TogglesRepository do
       all_qa_toggles = TogglesRepository.all_for "qa"
       all_qa_toggles.length.should == 2
       (all_qa_toggles.first.is_a? Toggle).should == true
-      all_qa_toggles.should contain_toggle Toggle.new "queue", "Queue", true, "qa", "description"
-      all_qa_toggles.should contain_toggle Toggle.new "vatu", "VATU", false, "qa", "description"
+      all_qa_toggles.should contain_toggle Toggle.new "queue", true, "qa", "description"
+      all_qa_toggles.should contain_toggle Toggle.new "vatu", false, "qa", "description"
     end
 
     it "should return default false value for toggles not set for environment" do
       all_uat_toggles = TogglesRepository.all_for "uat"
       all_uat_toggles.length.should == 2
       (all_uat_toggles.first.is_a? Toggle).should == true
-      all_uat_toggles.should contain_toggle Toggle.new "queue", "Queue", true, "uat", "description"
-      all_uat_toggles.should contain_toggle Toggle.new "vatu", "VATU", false, "uat", "description"
+      all_uat_toggles.should contain_toggle Toggle.new "queue", true, "uat", "description"
+      all_uat_toggles.should contain_toggle Toggle.new "vatu", false, "uat", "description"
     end
 
     it "should return nil if environment doesn't exist" do
@@ -112,7 +112,6 @@ describe TogglesRepository do
 
     def toggle_match?(expected_toggle, listed_toggle)
       listed_toggle.name == expected_toggle.name &&
-          listed_toggle.display_name == expected_toggle.display_name &&
           listed_toggle.description == expected_toggle.description &&
           listed_toggle.environment == expected_toggle.environment &&
           listed_toggle.value == expected_toggle.value

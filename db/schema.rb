@@ -25,8 +25,7 @@ ActiveRecord::Schema.define(version: 20140710140559) do
   add_index "environments_repositories", ["name"], name: "index_environments_repositories_on_name", unique: true, using: :btree
 
   create_table "features_repositories", force: true do |t|
-    t.string   "name",         null: false
-    t.string   "display_name", null: false
+    t.string   "name",        null: false
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
