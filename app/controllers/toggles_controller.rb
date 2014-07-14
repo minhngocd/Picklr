@@ -1,5 +1,5 @@
 class TogglesController < ApplicationController
-  before_filter :authenticate_user!, only: [:toggle]
+  before_filter :authenticate_user!, except: [:all, :show]
 
   def all
     @environment = params[:env]

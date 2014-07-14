@@ -4,8 +4,22 @@ describe FeaturesController do
 
   let(:user) { User.create! email: "test@test.com", password: "password", password_confirmation: "password", admin: true }
 
+  describe "new" do
+    it "should redirect to login if user not logged in" do
+      get :new
+      response.should redirect_to "/users/sign_in"
+    end
+
+    it "should render view if user logged in" do
+      sign_in :user, user
+      get :new
+      response.should be_success
+      response.body.should render_template("new")
+    end
+  end
+
   describe "edit" do
-    it "should return 503 if user is not logged in" do
+    it "should redirect to login if user is not logged in" do
       get :edit, feature: "queue"
       response.should redirect_to "/users/sign_in"
     end
@@ -32,7 +46,7 @@ describe FeaturesController do
   end
 
   describe "update" do
-    it "should return 503 if user is not logged in" do
+    it "should redirect to login if user is not logged in" do
       put :update, feature: "queue", environments: ["qa"]
       response.should redirect_to "/users/sign_in"
     end
@@ -58,7 +72,7 @@ describe FeaturesController do
   end
 
   describe "create" do
-    it "should return 503 if user is not logged in" do
+    it "should redirect to login if user is not logged in" do
       post :create, name: "queue", display_name: "queue", description: ""
       response.should redirect_to "/users/sign_in"
     end

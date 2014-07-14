@@ -1,5 +1,5 @@
 class FeaturesController < ApplicationController
-  before_filter :authenticate_user!, only: [:edit, :update, :create]
+  before_filter :authenticate_user!
 
   def edit
     all_environments = EnvironmentsRepository.all_environments
@@ -39,8 +39,5 @@ class FeaturesController < ApplicationController
     rescue Exception => exception
       render text: exception.message, status: 500
     end
-  end
-
-  def new
   end
 end

@@ -9,16 +9,13 @@ Rails.application.routes.draw do
   put   '/features/:feature'       => 'features#update'       #update toggle value for feature for all envs
 
   #Environment Management
+  get   '/environments'     => 'environments#all'             #show all available environments
   get   '/environments/new' => 'environments#new'             #new environment
   post  '/environments/new' => 'environments#create'          #create environment
                                                               #set toggle value for environment for all features
-
-  #Browsing
-  get   '/environments'       => 'environments#all'           #show all available environments
+  #Toggling
   get   '/environments/:env'  => 'toggles#all'                #html+json all toggles for env
   get   '/environments/:env/:feature' => 'toggles#show'       #json single toggle for env
-
-  #Toggle Management
   post  '/environments/:env/:feature' => 'toggles#toggle'     #toggle the value given toggle
 
 
