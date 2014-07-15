@@ -1,9 +1,18 @@
-<%= form_for :feature, url: '/features' do %>
-    <%= label_tag 'name' %>
-    <%= text_field_tag 'name', nil, maxlength: 30 %>
-    <%= label_tag 'description' %>
-    <%= text_area_tag 'description', nil, maxlength: 200 %>
+<% content_for :title do
+  "New Feature"
+end %>
 
-    <%= submit_tag "Create new feature" %>
+<%= form_for :feature, url: '/features' do %>
+    <div class="input-fields">
+        <div>
+            <%= label_tag 'name' %>
+            <%= text_field_tag 'name', nil, maxlength: 30 %>
+        </div>
+        <div>
+            <%= label_tag 'description' %>
+            <%= text_area_tag 'description', nil, maxlength: 200 %>
+        </div>
+    </div>
+    <%= submit_tag "Create new feature", class: "button" %>
 <% end %>
 

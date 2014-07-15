@@ -33,6 +33,11 @@ group :development, :test do
   gem 'database_cleaner'
 end
 
+group :assets do
+  gem 'less-rails'
+  gem 'therubyracer'
+end
+
 gem 'pg'
 gem 'devise'
 # Use ActiveModel has_secure_password

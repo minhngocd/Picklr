@@ -8,7 +8,7 @@ class TogglesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @toggles.inject({}) { |result, toggle| result.merge({toggle.name => toggle.value}) } }
+      format.json { render json: @toggles.inject({}) { |result, toggle| result.merge({toggle.feature.name => toggle.value}) } }
     end
   end
 

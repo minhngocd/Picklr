@@ -1,14 +1,18 @@
+<% content_for :title do %>
+    Feature toggles for <strong><%= params[:env] %></strong>
+<% end %>
+
 <ul id="toggles">
     <% @toggles.each do |toggle| %>
-        <li id="<%= toggle.name %>">
-            <div><%= toggle.name %></div>
-            <div class="toggle <%= toggle.value ? "on" : "off" %>"><%= toggle.value %></div>
+        <li id="<%= toggle.feature.name %>" class="<%= toggle.value ? "on" : "off" %>">
+            <div><%= toggle.feature.name %></div>
             <% if user_signed_in? %>
                 <%= button_to "Toggle",
-                              {controller: "toggles", action: "toggle", feature: toggle.name},
-                              {class: "toggle-button"}
+                              {controller: "toggles", action: "toggle", feature: toggle.feature.name},
+                              {class: "button toggle" }
                 %>
             <% end %>
+            <div class="toggle-value"><%= toggle.value ? "ON" : "OFF" %></div>
         </li>
     <% end %>
 </ul>

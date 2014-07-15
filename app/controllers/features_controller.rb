@@ -12,8 +12,9 @@ class FeaturesController < ApplicationController
 
   def update
     begin
+      checked_environments = params[:environments] || []
       EnvironmentsRepository.all_environments.each do |environment|
-        toggle_value = params[:environments].include? environment
+        toggle_value = checked_environments.include? environment
         TogglesRepository.toggle_with_value(environment, params[:feature], toggle_value)
       end
       flash[:notice] = "Feature updated"
@@ -33,7 +34,7 @@ class FeaturesController < ApplicationController
         flash[:notice] = "Feature created!"
         redirect_to action: :edit, status: 302, feature: params[:name]
       else
-        flash[:alert] = feature.errors.full_messages
+        flash[:alert] = feature.errors.full_messages.to_sentence
         redirect_to action: :new
       end
     rescue Exception => exception
