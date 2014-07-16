@@ -1,5 +1,5 @@
 When(/^I click the toggle button for "([^"]*)"$/) do |feature|
-  find(:css, "##{feature.downcase.split.join("_")} .toggle-button").click
+  find(:css, "##{feature.downcase.split.join("_")} .button").click
 end
 
 When(/^I click the complete feature edit button$/) do
@@ -15,7 +15,7 @@ When(/^I check the checkbox for "([^"]*)"$/) do |environment|
 end
 
 And(/^I click the add feature button$/) do
-  find("input[value='Add new feature']").click
+  find("a", text: "Add new feature").click
 end
 
 When(/^I click the create new feature button$/) do
