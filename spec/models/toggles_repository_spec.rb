@@ -11,10 +11,10 @@ describe TogglesRepository do
     EnvironmentsRepository.create!(name: "uat")
     FeaturesRepository.create!(name: "queue", description: "description")
     FeaturesRepository.create!(name: "vatu", description: "description")
-    TogglesRepository.create!(feature_name: "queue", environment_name: "qa", value: true)
-    TogglesRepository.create!(feature_name: "vatu", environment_name: "qa", value: false)
-    TogglesRepository.create!(feature_name: "queue", environment_name: "uat", value: true)
-    TogglesRepository.create!(feature_name: "queue", environment_name: "prod", value: true)
+    TogglesRepository.create!(feature_name: "queue", environment_name: "qa", next_value: true)
+    TogglesRepository.create!(feature_name: "vatu", environment_name: "qa", next_value: false)
+    TogglesRepository.create!(feature_name: "queue", environment_name: "uat", next_value: true)
+    TogglesRepository.create!(feature_name: "queue", environment_name: "prod", next_value: true)
   end
 
   describe "all toggles" do
