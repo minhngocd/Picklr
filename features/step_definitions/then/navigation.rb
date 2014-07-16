@@ -13,3 +13,7 @@ end
 Then(/^I should be taken to the edit toggle values page for feature "([^"]*)"$/) do |feature|
   current_path.should == "/features/#{feature}/edit"
 end
+
+Then(/^I should be taken to the add new environment page$/) do
+  current_path.should == "/environments/new"
+end

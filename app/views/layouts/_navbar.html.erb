@@ -5,20 +5,19 @@
             <li><a href="/">Picklr</a></li>
         </ul>
 
-        <ul class="navbar-nav">
-            <li>
-                <% if user_signed_in? %>
-                    <%= link_to "+ Add new feature", {controller: "features", action: "new"}, method: "get" %>
-                <% end %>
-            </li>
-        </ul>
+        <% if user_signed_in? %>
+            <ul class="navbar-nav">
+                <li><%= link_to "+ Add new feature", {controller: "features", action: "new"}, method: "get" %></li>
+                <li><%= link_to "+ Add new environment", {controller: "environments", action: "new"}, method: "get" %></li>
+            </ul>
+        <% end %>
 
         <ul class="navbar-nav navbar-right">
             <% if user_signed_in? %>
                 <li>Logged in as <strong><%= current_user.email %></strong></li>
-                <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+                <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link' %></li>
             <% else %>
-                <li><%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %></li>
+                <li><%= link_to "Login", new_user_session_path, :class => 'navbar-link' %></li>
             <% end %>
         </ul>
 

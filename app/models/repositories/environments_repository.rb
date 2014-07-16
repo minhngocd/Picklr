@@ -4,4 +4,7 @@ class EnvironmentsRepository < ActiveRecord::Base
     self.all.map{|environment| environment.name}
   end
 
+  def self.create_environment name
+    self.create! name: name
+  end
 end

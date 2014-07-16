@@ -22,3 +22,11 @@ Feature: Authorisation
     When I login as "admin@zopa.com"
     And I visit the base page
     Then I should see the add feature button
+
+  Scenario: Seeing the add environment button
+    When I visit the base page
+    Then I should not see the add environment button
+
+    When I login as "admin@zopa.com"
+    And I visit the base page
+    Then I should see the add environment button

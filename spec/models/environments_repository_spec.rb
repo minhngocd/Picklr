@@ -18,6 +18,15 @@ describe EnvironmentsRepository do
     end
   end
 
+  describe "create" do
+    it "should create new feature" do
+      EnvironmentsRepository.all_environments.length.should == 0
+      EnvironmentsRepository.create_environment("test")
+      EnvironmentsRepository.all_environments.length.should == 1
+      EnvironmentsRepository.all_environments.first.should == "test"
+    end
+  end
+
   describe "with no data" do
     it "should return empty array" do
       EnvironmentsRepository.all_environments.should == []

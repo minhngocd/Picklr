@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   #Environment Management
   get   '/environments'     => 'environments#all'             #show all available environments
   get   '/environments/new' => 'environments#new'             #new environment
-  post  '/environments/new' => 'environments#create'          #create environment
-                                                              #set toggle value for environment for all features
+  post  '/environments' => 'environments#create'          #create environment
+
   #Toggling
   get   '/environments/:env'  => 'toggles#all'                #html+json all toggles for env
   get   '/environments/:env/:feature' => 'toggles#show'       #json single toggle for env

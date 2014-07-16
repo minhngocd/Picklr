@@ -103,7 +103,7 @@ describe FeaturesController do
       response.should redirect_to "/features/new"
     end
 
-    it "should return 500 if error while trying to update toggle value" do
+    it "should return 500 if error while trying create feature" do
       sign_in :user, user
       expect(FeaturesRepository).to receive(:create_feature).and_raise(Exception.new "Error message")
       post :create, name: "queue", description: ""

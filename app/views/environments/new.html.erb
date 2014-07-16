@@ -1,0 +1,14 @@
+<% content_for :title do
+  "New Environment"
+end %>
+
+<%= form_for :environment, url: '/environments' do %>
+    <div class="input-fields">
+        <div>
+            <%= label_tag 'name' %>
+            <%= text_field_tag 'name', nil, maxlength: 30 %>
+        </div>
+    </div>
+    <%= submit_tag "Create new environment", class: "button" %>
+<% end %>
+
