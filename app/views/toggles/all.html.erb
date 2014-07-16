@@ -5,7 +5,7 @@
 <ul id="toggles">
     <% @toggles.each do |toggle| %>
         <li id="<%= toggle.feature.name %>" class="<%= toggle.value ? "on" : "off" %>">
-            <div><%= toggle.feature.name %></div>
+            <%= link_to toggle.feature.name, "/features/#{toggle.feature.name}/edit" %>
             <% if user_signed_in? %>
                 <%= button_to "Toggle",
                               {controller: "toggles", action: "toggle", feature: toggle.feature.name},

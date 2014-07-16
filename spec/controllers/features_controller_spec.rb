@@ -61,6 +61,16 @@ describe FeaturesController do
       response.should redirect_to "/"
     end
 
+    it "should toggle feature toggle for all environments when nothing checked" do
+      sign_in :user, user
+      expect(EnvironmentsRepository).to receive(:all_environments).and_return(["qa", "uat"])
+      expect(TogglesRepository).to receive(:toggle_with_value).with("qa", "queue", false)
+      expect(TogglesRepository).to receive(:toggle_with_value).with("uat", "queue", false)
+      put :update, feature: "queue"
+      flash[:notice].should eq("Feature updated")
+      response.should redirect_to "/"
+    end
+
     it "should return 500 if error while trying to update toggle value" do
       sign_in :user, user
       expect(EnvironmentsRepository).to receive(:all_environments).and_return(["qa", "uat"])

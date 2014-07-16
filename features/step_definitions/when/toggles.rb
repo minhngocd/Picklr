@@ -25,3 +25,7 @@ end
 When(/^I fill out field "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field.downcase.split.join("_"), with: value
 end
+
+And(/^I click the toggle "([^"]*)"$/) do |feature|
+  find("##{feature} a", text: feature).click
+end

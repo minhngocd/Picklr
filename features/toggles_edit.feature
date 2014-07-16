@@ -15,6 +15,11 @@ Feature: Edit Toggles
     When I click the toggle button for "queue"
     Then I should see the feature "queue" is toggled "on"
 
+  Scenario: Navigating to edit toggle value for all environments
+    When I visit the feature toggles page for environment "qa"
+    And I click the toggle "queue"
+    Then I should be taken to the edit toggle values page for feature "queue"
+
   Scenario: Edit toggle value for all environments
     When I visit the edit toggle values page for feature "queue"
     Then I should see a "checked" checkbox for "qa"
