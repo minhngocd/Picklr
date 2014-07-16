@@ -52,6 +52,15 @@ describe EnvironmentsController do
       response.should redirect_to "/environments/new"
     end
 
+    it "should display error on duplicate entry" do
+      sign_in :user, user
+      expect(EnvironmentsRepository).to receive(:environment_exists?).with("qa").and_return(true)
+      expect(EnvironmentsRepository).to_not receive(:create_environment)
+      post :create, name: "qa"
+      flash[:alert].should include "Environment already exists"
+      response.should redirect_to "/environments/new"
+    end
+
     it "should return 500 if error while trying to create environment" do
       sign_in :user, user
       expect(EnvironmentsRepository).to receive(:create_environment).and_raise(Exception.new "Error message")

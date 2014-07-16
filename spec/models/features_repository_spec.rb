@@ -32,4 +32,12 @@ describe FeaturesRepository do
       FeaturesRepository.all_features.first.should == "test4"
     end
   end
+
+  describe "exists" do
+    it "should return if feature already exists or not" do
+      FeaturesRepository.create!(name: "queue",description: "")
+      FeaturesRepository.feature_exists?("queue").should == true
+      FeaturesRepository.feature_exists?("vatu").should == false
+    end
+  end
 end

@@ -7,4 +7,8 @@ class EnvironmentsRepository < ActiveRecord::Base
   def self.create_environment name
     self.create! name: name
   end
+
+  def self.environment_exists? name
+    self.exists? name: name
+  end
 end

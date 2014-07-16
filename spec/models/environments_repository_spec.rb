@@ -27,6 +27,14 @@ describe EnvironmentsRepository do
     end
   end
 
+  describe "exists" do
+    it "should return whether an environment exists" do
+      EnvironmentsRepository.create!(name: "qa")
+      EnvironmentsRepository.environment_exists?("qa").should == true
+      EnvironmentsRepository.environment_exists?("prod").should == false
+    end
+  end
+
   describe "with no data" do
     it "should return empty array" do
       EnvironmentsRepository.all_environments.should == []

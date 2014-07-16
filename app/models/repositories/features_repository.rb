@@ -8,4 +8,8 @@ class FeaturesRepository < ActiveRecord::Base
     self.create!(name: name, description: description)
   end
 
+  def self.feature_exists? name
+    self.exists? name: name
+  end
+
 end

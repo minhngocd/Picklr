@@ -103,6 +103,15 @@ describe FeaturesController do
       response.should redirect_to "/features/new"
     end
 
+    it "should display error on duplicate entry" do
+      sign_in :user, user
+      expect(FeaturesRepository).to receive(:feature_exists?).with("queue").and_return(true)
+      expect(FeaturesRepository).to_not receive(:create_feature)
+      post :create, name: "queue", description: ""
+      flash[:alert].should include "Feature already exists"
+      response.should redirect_to "/features/new"
+    end
+
     it "should return 500 if error while trying create feature" do
       sign_in :user, user
       expect(FeaturesRepository).to receive(:create_feature).and_raise(Exception.new "Error message")
