@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140716144557) do
+ActiveRecord::Schema.define(version: 20140716150809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20140716144557) do
     t.boolean  "next_value",       default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "cache_value",      default: false, null: false
   end
 
   add_index "toggles_repositories", ["feature_name", "environment_name"], name: "index_toggles_repositories_on_feature_name_and_environment_name", unique: true, using: :btree

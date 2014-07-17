@@ -1,4 +1,4 @@
-And(/^I login as "([^"]*)"$/) do |email|
+When(/^I login as "([^"]*)"$/) do |email|
   visit "/"
   find(:css, "a", text: "Login").click
   fill_in :user_email, with: email

@@ -7,7 +7,7 @@ Then(/^I should see "([^"]*)"$/) do |text|
   page.text.should include text
 end
 
-And(/^I should see notice "([^"]*)"$/) do |notice|
+Then(/^I should see notice "([^"]*)"$/) do |notice|
   find(:css, ".alert").text.should include notice
 end
 

@@ -3,7 +3,7 @@ When(/^I click the environment "([^"]*)"$/) do |environment|
 end
 
 
-And(/^I click the add environment button$/) do
+When(/^I click the add environment button$/) do
   find("a", text: 'Add new environment').click
 end
 

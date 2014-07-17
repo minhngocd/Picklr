@@ -14,7 +14,7 @@ When(/^I check the checkbox for "([^"]*)"$/) do |environment|
   find(:css, "##{environment} input[type='checkbox']").set(true)
 end
 
-And(/^I click the add feature button$/) do
+When(/^I click the add feature button$/) do
   find("a", text: "Add new feature").click
 end
 
@@ -26,6 +26,6 @@ When(/^I fill out field "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field.downcase.split.join("_"), with: value
 end
 
-And(/^I click the toggle "([^"]*)"$/) do |feature|
+When(/^I click the toggle "([^"]*)"$/) do |feature|
   find("##{feature} a", text: feature).click
 end

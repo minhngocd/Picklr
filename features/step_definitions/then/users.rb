@@ -7,10 +7,10 @@ Then(/^I should not see the logout link$/) do
 end
 
 
-And(/^I should see the logout link$/) do
+Then(/^I should see the logout link$/) do
   find(:css, "a", text: "Logout").should be_visible
 end
 
-And(/^I should not see the login link$/) do
+Then(/^I should not see the login link$/) do
   page.should have_no_selector(:css, "a", text: "Login")
 end
