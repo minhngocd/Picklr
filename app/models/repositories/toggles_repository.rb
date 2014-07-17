@@ -1,33 +1,46 @@
-class TogglesRepository < ActiveRecord::Base
+class TogglesRepository
 
   def self.all_for environment
-    return nil unless EnvironmentsRepository.find_by_name environment
-    FeaturesRepository.all.map do |feature|
-      db_toggle = TogglesRepository.find_by(environment_name: environment, feature_name: feature.name)
-      Toggle.new(ApplicationFeature.new(feature.name, feature.description),
-                 Environment.new(environment),
-                 db_toggle.nil? ? false : db_toggle.next_value)
+    return nil unless EnvironmentsRepository.environment_exists? environment
+    all_toggles = FileIO.load_create_json Settings.toggles_repo_path + "/#{environment}.json"
+    if (all_toggles.empty?)
+      self.create environment
+      all_toggles = FileIO.load_create_json Settings.toggles_repo_path + "/#{environment}.json"
     end
+    all_toggles
+  end
+
+  def self.create environment
+    return nil unless EnvironmentsRepository.environment_exists? environment
+    toggles = {}
+    FeaturesRepository.all_features.each do |feature|
+      toggles.merge!(feature => false)
+    end
+    FileIO.write_create_json(toggles, Settings.toggles_repo_path + "/#{environment}.json")
   end
 
   def self.value_for environment, feature
-    return nil unless EnvironmentsRepository.find_by_name(environment) && FeaturesRepository.find_by_name(feature)
+    return nil unless
+        EnvironmentsRepository.environment_exists?(environment) &&
+            FeaturesRepository.feature_exists?(feature)
 
-    db_toggle = self.find_by environment_name: environment, feature_name: feature
-    db_toggle.nil? ? false : db_toggle.next_value
+    self.all_for(environment)[feature]
   end
 
   def self.toggle environment, feature
-    raise Exception.new "Make sure environment and feature exists!" unless EnvironmentsRepository.find_by_name(environment) && FeaturesRepository.find_by_name(feature)
+    raise Exception.new "Make sure environment and feature exists!" unless
+        EnvironmentsRepository.environment_exists?(environment) &&
+            FeaturesRepository.feature_exists?(feature)
 
-    db_toggle = self.find_or_create_by! environment_name: environment, feature_name: feature
-    db_toggle.update_attributes!(next_value: !db_toggle.next_value)
+    new_value = !self.value_for(environment, feature)
+    self.toggle_with_value(environment, feature, new_value)
   end
 
   def self.toggle_with_value environment, feature, value
-    raise Exception.new "Make sure environment and feature exists!" unless EnvironmentsRepository.find_by_name(environment) && FeaturesRepository.find_by_name(feature)
+    raise Exception.new "Make sure environment and feature exists!" unless
+        EnvironmentsRepository.environment_exists?(environment) &&
+            FeaturesRepository.feature_exists?(feature)
 
-    db_toggle = self.find_or_create_by! environment_name: environment, feature_name: feature
-    db_toggle.update_attributes!(next_value: value)
+    FileIO.merge_create_json({feature => value},  Settings.toggles_repo_path + "/#{environment}.json")
   end
 end

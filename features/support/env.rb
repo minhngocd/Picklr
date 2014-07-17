@@ -53,6 +53,12 @@ Cucumber::Rails::World.use_transactional_fixtures = true
 #   end
 #
 
+Before do
+  FileUtils.rm_rf(Settings.toggles_repo_path)
+  FileUtils.rm_rf(Settings.features_repo_file)
+  FileUtils.rm_rf(Settings.environments_repo_file)
+end
+
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature

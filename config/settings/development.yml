@@ -1,0 +1,3 @@
+features_repo_file: <%= Rails.root + "tmp/features.json" %>
+environments_repo_file: <%= Rails.root + "tmp/environments.json" %>
+toggles_repo_path: <%= Rails.root + "tmp/toggles" %>

@@ -40,6 +40,8 @@ end
 
 gem 'pg'
 gem 'devise'
+gem 'rails_config'
+require 'json'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

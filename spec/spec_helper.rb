@@ -40,7 +40,11 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 
-  RSpec.configure do |config|
-    config.include Devise::TestHelpers, type: :controller
+  config.include Devise::TestHelpers, type: :controller
+
+  config.before(:each) do
+    FileUtils.rm_rf(Settings.toggles_repo_path)
+    FileUtils.rm_rf(Settings.features_repo_file)
+    FileUtils.rm_rf(Settings.environments_repo_file)
   end
 end

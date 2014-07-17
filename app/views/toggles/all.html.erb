@@ -3,16 +3,16 @@
 <% end %>
 
 <ul id="toggles">
-    <% @toggles.each do |toggle| %>
-        <li id="<%= toggle.feature.name %>" class="<%= toggle.value ? "on" : "off" %>">
-            <%= link_to toggle.feature.name, "/features/#{toggle.feature.name}/edit" %>
+    <% @toggles.each do |name, value| %>
+        <li id="<%= name %>" class="<%= value ? "on" : "off" %>">
+            <%= link_to name, "/features/#{name}/edit" %>
             <% if user_signed_in? %>
                 <%= button_to "Toggle",
-                              {controller: "toggles", action: "toggle", feature: toggle.feature.name},
+                              {controller: "toggles", action: "toggle", feature: name},
                               {class: "button toggle" }
                 %>
             <% end %>
-            <div class="toggle-value"><%= toggle.value ? "ON" : "OFF" %></div>
+            <div class="toggle-value"><%= value ? "ON" : "OFF" %></div>
         </li>
     <% end %>
 </ul>

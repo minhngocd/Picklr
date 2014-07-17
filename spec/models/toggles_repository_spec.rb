@@ -2,40 +2,34 @@ require 'spec_helper'
 
 describe TogglesRepository do
 
-  let(:qa) { Environment.new "qa" }
-  let(:uat) { Environment.new "uat" }
-  let(:queue) { ApplicationFeature.new "queue", "description" }
-  let(:vatu) { ApplicationFeature.new "vatu", "description" }
   before do
-    EnvironmentsRepository.create!(name: "qa")
-    EnvironmentsRepository.create!(name: "uat")
-    FeaturesRepository.create!(name: "queue", description: "description")
-    FeaturesRepository.create!(name: "vatu", description: "description")
-    TogglesRepository.create!(feature_name: "queue", environment_name: "qa", next_value: true)
-    TogglesRepository.create!(feature_name: "vatu", environment_name: "qa", next_value: false)
-    TogglesRepository.create!(feature_name: "queue", environment_name: "uat", next_value: true)
-    TogglesRepository.create!(feature_name: "queue", environment_name: "prod", next_value: true)
+    FileIO.write_create_json([{name: "qa"},{name: "uat"}], Settings.environments_repo_file)
+    FileIO.write_create_json([{name: "queue", description: ""},{name: "vatu", description: ""}], Settings.features_repo_file)
+
+    qa_toggles = {queue: true, vatu: false}
+    uat_toggles = {queue: true, vatu: false}
+    FileIO.write_create_json(qa_toggles, Settings.toggles_repo_path + "/qa.json")
+    FileIO.write_create_json(uat_toggles, Settings.toggles_repo_path + "/uat.json")
   end
 
   describe "all toggles" do
     it "should return all toggles for a given environment" do
-      all_qa_toggles = TogglesRepository.all_for "qa"
-      all_qa_toggles.length.should == 2
-      (all_qa_toggles.first.is_a? Toggle).should == true
-      all_qa_toggles.should contain_toggle Toggle.new queue, qa, true
-      all_qa_toggles.should contain_toggle Toggle.new vatu, qa, false
-    end
-
-    it "should return default false value for toggles not set for environment" do
-      all_uat_toggles = TogglesRepository.all_for "uat"
-      all_uat_toggles.length.should == 2
-      (all_uat_toggles.first.is_a? Toggle).should == true
-      all_uat_toggles.should contain_toggle Toggle.new queue, uat, true
-      all_uat_toggles.should contain_toggle Toggle.new vatu, uat, false
+      qa_toggles = TogglesRepository.all_for "qa"
+      qa_toggles.length.should == 2
+      qa_toggles["queue"].should == true
+      qa_toggles["vatu"].should == false
     end
 
     it "should return nil if environment doesn't exist" do
       TogglesRepository.all_for("prod").should == nil
+    end
+
+    it "should create file with default feature toggles if environment exists but toggle file doesn't exist" do
+      EnvironmentsRepository.create_environment "prod"
+      prod_toggles = TogglesRepository.all_for("prod")
+      prod_toggles.length.should == 2
+      prod_toggles["queue"].should == false
+      prod_toggles["vatu"].should == false
     end
   end
 
@@ -53,72 +47,37 @@ describe TogglesRepository do
       TogglesRepository.value_for("qa", "some_feature").should == nil
     end
 
-    it "should return false if feature is not set for environment" do
-      TogglesRepository.value_for("uat", "vatu").should == false
+    it "should create file with default feature toggles if environment exists but toggle file doesn't exist" do
+      EnvironmentsRepository.create_environment "prod"
+      prod_toggles = TogglesRepository.value_for("prod","queue")
+      prod_toggles.should == false
+      TogglesRepository.all_for("prod").length.should == 2
     end
   end
 
   describe "toggle value" do
     it "should toggle the value of a feature toggle" do
-      TogglesRepository.toggle("qa","queue")
-      TogglesRepository.value_for("qa","queue").should == false
-      TogglesRepository.toggle("qa","vatu")
-      TogglesRepository.value_for("qa","vatu").should == true
+      TogglesRepository.toggle("qa", "queue")
+      TogglesRepository.value_for("qa", "queue").should == false
+      TogglesRepository.toggle("qa", "vatu")
+      TogglesRepository.value_for("qa", "vatu").should == true
     end
 
-    it "should create the toggle value and set to true if not already set" do
-      TogglesRepository.toggle("uat","vatu")
-      TogglesRepository.value_for("uat", "vatu").should == true
-    end
-
-    it "should raise exception if environment doesn't exist" do
-      lambda{TogglesRepository.toggle("qa", "some_feature")}.should raise_exception
-    end
-
-    it "should raise exception if feature doesn't exist" do
-      lambda{TogglesRepository.toggle("prod", "queue")}.should raise_exception
+    it "should raise exception if entry not found" do
+      lambda { TogglesRepository.toggle("qa", "something") }.should raise_exception
     end
   end
 
   describe "toggle with given value" do
     it "should toggle the value of a feature toggle" do
-      TogglesRepository.toggle_with_value("qa","queue", false)
-      TogglesRepository.value_for("qa","queue").should == false
-      TogglesRepository.toggle_with_value("qa","vatu", true)
-      TogglesRepository.value_for("qa","vatu").should == true
+      TogglesRepository.toggle_with_value("qa", "queue", false)
+      TogglesRepository.value_for("qa", "queue").should == false
+      TogglesRepository.toggle_with_value("qa", "vatu", true)
+      TogglesRepository.value_for("qa", "vatu").should == true
     end
 
-    it "should create the toggle value if not already set" do
-      TogglesRepository.toggle_with_value("uat","vatu", true)
-      TogglesRepository.value_for("uat", "vatu").should == true
-    end
-
-    it "should raise exception if environment doesn't exist" do
-      lambda{TogglesRepository.toggle_with_value("qa", "some_feature", true)}.should raise_exception
-    end
-
-    it "should raise exception if feature doesn't exist" do
-      lambda{TogglesRepository.toggle_with_value("prod", "queue", true)}.should raise_exception
-    end
-  end
-
-  RSpec::Matchers.define :contain_toggle do |expected_toggle|
-    result = false
-    match do |actual_list|
-      actual_list.each do |listed_toggle|
-        if toggle_match?(expected_toggle, listed_toggle)
-          result = true
-          break
-        end
-      end
-      result
-    end
-
-    def toggle_match?(expected_toggle, listed_toggle)
-      listed_toggle.feature.name == expected_toggle.feature.name &&
-          listed_toggle.feature.description == expected_toggle.feature.description &&
-          listed_toggle.environment.name == expected_toggle.environment.name &&
-          listed_toggle.value == expected_toggle.value
+    it "should raise exception if entry not found" do
+      lambda { TogglesRepository.toggle_with_value("qa", "something", true) }.should raise_exception
     end
   end
 

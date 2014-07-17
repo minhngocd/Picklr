@@ -5,7 +5,7 @@ describe TogglesController do
   let(:qa) { Environment.new "qa" }
   let(:vatu) { ApplicationFeature.new "vatu", "description" }
   let(:queue) { ApplicationFeature.new "queue", "description" }
-  let(:toggles) { [Toggle.new(queue, qa, true), Toggle.new(vatu, qa, false)] }
+  let(:toggles) { {"queue" => true, "vatu" => false} }
   let(:user) { User.create! email: "test@test.com", password: "password", password_confirmation: "password", admin: true }
 
   describe "all" do
